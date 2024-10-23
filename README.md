@@ -13,6 +13,8 @@ Streamflix es una plataforma de streaming de víde, similar a Twicth, que permit
 
 ## Organización del repositorio
 
-- Indicar estructura de directorios/ficheros y cuáles son los principales
+- Indicar estructura de directorios/ficheros y cuáles son los principales:
+   practicas
+   proyectoFinal 
 - Cada práctica debería estar en su propio fichero/directorio
 - Emplear ficheros de texto (ej. markdown vs odt/docx)
