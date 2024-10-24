@@ -11,18 +11,18 @@
         <h1>Streamflix</h1>
         <div class="video-grid">
             <div class="video">
-                <video controls>
+                <video controls autoplay>
                     <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4">
                     Tu navegador no soporta la reproducción de vídeos.
                 </video>
             </div>
             <div class="video">
-                <video controls>
-                    <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4">
+                <video controls autoplay>
+                    <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4" >
                     Tu navegador no soporta la reproducción de vídeos.
                 </video>
             </div>
-            <div class="video">
+            <div class="video" autoplay>
                 <video controls>
                     <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4">
                     Tu navegador no soporta la reproducción de vídeos.
