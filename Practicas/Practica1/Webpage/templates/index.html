@@ -3,32 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <title>Streamflix</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Streamflix</h1>
-        <div class="video-grid">
-            <div class="video">
-                <video controls autoplay>
-                    <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4">
-                    Tu navegador no soporta la reproducción de vídeos.
-                </video>
-            </div>
-            <div class="video">
-                <video controls autoplay>
-                    <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4" >
-                    Tu navegador no soporta la reproducción de vídeos.
-                </video>
-            </div>
-            <div class="video" autoplay>
-                <video controls>
-                    <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4">
-                    Tu navegador no soporta la reproducción de vídeos.
-                </video>
-            </div>    
-        </div>
+    <nav class="navbar">
+        <img src="{{ url_for('static', filename='img/streamflix.png') }}" class="profile-img">
+        <span class="name">Streamflix</span>
+    </nav>
+
+    <div class="video-container">
+        <table class="video-table">
+            <tr>
+                <td>
+                    <video controls autoplay muted>
+                        <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4" title="Vídeo 1">
+                    </video>
+                </td>
+                <td>
+                    <video controls autoplay muted>
+                        <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4" title="Vídeo 2">
+                    </video>
+                </td>
+                <td>
+                    <video controls autoplay muted>
+                        <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4" title="Vídeo 3">
+                    </video>
+                </td>
+            </tr>
+            <tr>
+                <td> 
+                    <video controls autoplay muted>
+                        <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4" title="Vídeo 4">
+                    </video>
+                </td>
+                <td>
+                    <video controls autoplay muted>
+                        <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4" title="Vídeo 5">
+                    </video>
+                </td>
+                <td>
+                    <video controls autoplay muted>
+                        <source src="{{ url_for('static', filename='video/videoStreaming.mp4') }}" type="video/mp4" title="Vídeo 6">
+                    </video>
+                </td>
+            </tr>
+        </table>
     </div>
+
+    <footer class="footer">
+        © Diseño y Despliegue de Infraestructuras y Servicios Telemáticos
+    </footer>
+
 </body>
 </html>
