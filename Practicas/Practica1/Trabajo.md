@@ -39,3 +39,5 @@ Estoy haciendo una página web con Flask de Python, que a su vez utiliza HTML y 
 
 Toda la información sobre la página está aquí:
 [Ir al README de la página web](Webpage/README.md)
+
+He realizado diferentes pruebas de carga con JMeter para comprobar el rendimiento del servicio y también he comprobado el rendimiento de la CPU (htop) con pocos usuarios y con muchos usuarios.
