@@ -48,7 +48,7 @@ JMeter nos permite simular múltiples usuarios accendiendo simultáneamente a la
     ```
 
 2. **Variación del número de usuarios y tiempo**: Hemos realizado pruebas variando el número de usuarios simultáneos y el tiempo de duración de las pruebas:
-    - **Pruebas sobre la petición 1:**
+- **Pruebas sobre la petición 1:**
         - **Número de usuarios: 1 (en 1 segundo):**
             ![1 usuario en 1 segundo](Images/Request1/image1.png)
           Con un solo usuario, el tiempo de respuesta es muy bajo y consistente lo que indica que el sistema maneha bien las solicitudes individuales.
@@ -77,7 +77,7 @@ JMeter nos permite simular múltiples usuarios accendiendo simultáneamente a la
 En resumen, a medida que aumenta el número de usuarios, el tiempo de respuesta promedio y la variabilidad en los tiempos de respuesta también aumentan. Esto es esperado, ya que el sistema tiene que manejar más solicitudes simultaneamente. Aumentando el tiempo pasa lo contrario. Y podemos apreciar que 10.000 usuarios en 1 o 10 segundo sería demasiado para el servidor y que apreciariamos errores.
 
 - **Pruebas sobre la petición 2:**
-- En este caso, los bytes han aumentado mucho; porque el servidor maneja múltiples peticiones simultaneas para la transimisión de video; por ello podemos apreciar peores resultados en cuanto en la respuesta del servidor.
+  En este caso, los bytes han aumentado mucho; porque el servidor maneja múltiples peticiones simultaneas para la transimisión de video; por ello podemos apreciar peores resultados en cuanto en la respuesta del servidor.
         - **Número de usuarios: 1 (en 1 segundo):**
             ![1 usuario en 1 segundo](Images/Request2/image1.png)
         - **Número de usuarios: 10 (en 1 segundo):**
