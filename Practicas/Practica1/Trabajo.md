@@ -42,5 +42,5 @@ Toda la información sobre la página está aquí:
 
 He realizado diferentes pruebas de carga con JMeter para comprobar el rendimiento del servicio y también he comprobado el rendimiento de la CPU (htop) con pocos usuarios y con muchos usuarios.
 
-##Olatz
+## Olatz
 Dado que mis compañeros estaban trabajando en la plataforma de streaming, descargué JMeter para realizar pruebas de carga. Me familiaricé con la documentación en la página oficial de JMeter (https://jmeter.apache.org/usermanual/get-started.html) para asegurarme de configurar correctamente las pruebas. Más tarde, Rubén creó una página web y la configuró para redirigir las solicitudes, permitiéndome conectarme y realizar las pruebas de carga. Sin embargo, al usar un servidor, tuvimos dudas sobre la precisión de los datos obtenidos. Finalmente, intentamos conectarnos mediante el modo 'bridge', pero no fue posible ya que estábamos trabajando en una red interna
