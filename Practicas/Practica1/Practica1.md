@@ -49,12 +49,15 @@ JMeter nos permite simular múltiples usuarios accendiendo simultáneamente a la
 
 2. **Variación del número de usuarios y tiempo**: Hemos realizado pruebas variando el número de usuarios simultáneos y el tiempo de duración de las pruebas:
 - **Pruebas sobre la petición 1:**
+  
         - **Número de usuarios: 1 (en 1 segundo):**
             ![1 usuario en 1 segundo](Images/Request1/image1.png)
           Con un solo usuario, el tiempo de respuesta es muy bajo y consistente lo que indica que el sistema maneha bien las solicitudes individuales.
+  
         - **Número de usuarios: 10 (en 1 segundo):**
             ![10 usuarios en 1 segundo](Images/Request1/image2.png)
-          Con 10 usuarios, el tiempo de respuesta promedio aumenta ligeramente y la desviación estándar también aumenta, lo que sugiere una mayor variabilidad en los tiempos de respuesta. 
+          Con 10 usuarios, el tiempo de respuesta promedio aumenta ligeramente y la desviación estándar también aumenta, lo que sugiere una mayor variabilidad en los tiempos de respuesta.
+  
         - **Número de usuarios: 100 (en 1 segundo):**
             ![100 usuarios en 1 segundo](Images/Request1/image3.png)
           Con 100 usuarios, el tiempo de respuesta promedio aumenta significativamente y la desviación estándar es mucho mayor, indicando una mayor variabilidad y posibles cuellos de botella en el sistema. A             pesar             de eso, el throughput es razonablemente alto.
