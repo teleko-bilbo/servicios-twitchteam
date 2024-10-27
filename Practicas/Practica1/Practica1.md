@@ -33,6 +33,10 @@ La complejidad de este sistema radica en varios factores que intervienen en el r
 En conjunto, estos factores generan una arquitectura de alto grado de complejidad. Mantener un balance entre eficiencia, escalabilidad y calidad de servicio se convierte en el objetivo clave. Además, es importante identificar y solucionar los cuellos de botella para lograr un sistema robusto que funciones adecuadamente en condiones de carga variables.
 
 ## Pruebas de carga:
+
+Para evaluar el rendimiento de nuestro servicio de video bajo diferentes niveles de carga, hemos utilizado Apache JMeter, una herramienta de código abierto diseñada específicamente para realizar pruebas de carga y medir el rendimiento de aplicaciones web y otros servicios.
+JMeter nos permite simular múltiples usuarios accendiendo simultáneamente a la aplicación, enviando peticiones al servidor para medir cómo responde bajo distintas condiciones de carga. El objetivo de estas pruebas es comprender mejor los límites de nuestro sistema y verificar su estabilidad al simular un ambiente de uso real. Con JMeter, hemos definido diferentes tipos de peticiones y configurad el número de usuarios concurrentes, el tiempo entre cada solicitud y otros parámetros que nos permiten realizar una evaluación exhaustiva del desempeño de la aplicación.
+
 1. **Definición de peticiones**: Hemos definido las solicitudes necesarias para evaluar el rendimiento de nuestra página web, que simula un servicio de vídeo streaming. Esto incluye la carga de la página principal y las solicitudes para reproducir el vídeo.
     - **Petición 1:** Esta solicitud mide cómo el servidor gestiona las solicitudes para cargar la página principal.
     ```
