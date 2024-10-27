@@ -73,6 +73,7 @@ JMeter nos permite simular múltiples usuarios accendiendo simultáneamente a la
         - **Número de usuarios: 10000 (en 10 segundos):**
             ![10000 usuarios en 10 segundos](Images/Request1/image8.png)
           Con 10000 usuarios en 10 segundos, sería un poco mejor que en el caso anterior pero todavía podemos ver un 3% de errores.
+          
 En resumen, a medida que aumenta el número de usuarios, el tiempo de respuesta promedio y la variabilidad en los tiempos de respuesta también aumentan. Esto es esperado, ya que el sistema tiene que manejar más solicitudes simultaneamente. Aumentando el tiempo pasa lo contrario. Y podemos apreciar que 10.000 usuarios en 1 o 10 segundo sería demasiado para el servidor y que apreciariamos errores.
 
     - **Prueba sobre la petición 2:**
