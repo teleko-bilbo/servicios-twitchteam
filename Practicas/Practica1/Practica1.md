@@ -94,9 +94,10 @@ En resumen, a medida que aumenta el número de usuarios, el tiempo de respuesta 
             ![1000 usuarios en 100 segundos](Images/Request2/image6.png)
 En resumen, se puede apreciar lo mismo que en la petición 1, cuando aumenta el número de usuarios y el rendimiento será peor. Y que con muchos usuarios (1000 en nuestro caso) la CPU se satura.
 
-3. **Análisis del lado del cliente y del servidor**: Las pruebas se centran en el comportamiento del cliente al realizar peticiones y la capacidad del servidor para manejar dichas solicitudes. En nuesto caso, las pruebas se han realizado sobre un mismo equipo, por lo que ha actuado tanto de cliente como de servidor.
+3. **Análisis del lado del cliente y del servidor**: Las pruebas se centran en el comportamiento del cliente al realizar peticiones y la capacidad del servidor para manejar dichas solicitudes. En nuesto caso, las pruebas se han realizado sobre un mismo equipo, por lo que ha actuado tanto de cliente como de servidor. Esta configuración nos permite  analizar tanto el impacto de las solicitudes en el cliente como la carga en el servidor, observando cómo el sistema gestiona el procesamiento de múltiples usuarios simulados.
+4. Para evaluar el rendimiento de CPU durante las pruebas, hemos utilizado la herramienta htop, que permite visualizar el uso de los recursos en tiempo real.
     - **Rendimiento de la CPU:**
-    Cuando tenemos pocos usuarios, el rendimiento de la CPU es aceptable, pero al aumentar el número de usuarios, la CPU se satura, por lo que se puede observar que la CPU es un cuello de botella claro en nuestro caso.
+    En nuestras pruebas iniciales, con pocos usuarios realizando peticiones, el rendimiento de la CPU es aceptable y el sistema responde con rapide. Sin embargo, al incrementar el número de usuarios, se observa una saturación progresiva de la CPU, por lo que se puede observar que la CPU es un cuello de botella claro en nuestro caso. Esto significa que la capacidad de procesamiento del sistema no es suficiente para manejar altas cargas simultáneas, lo que impacta negativamente en los tiempos de respuesta y en la estabilidad general del servidor.
         - **Rendimiento con pocos usuarios**
             ![Pocos usuarios](Images/Htop/image1.png)
         - **Rendimiento con muchos usuarios**
