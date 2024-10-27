@@ -77,6 +77,7 @@ JMeter nos permite simular múltiples usuarios accendiendo simultáneamente a la
 En resumen, a medida que aumenta el número de usuarios, el tiempo de respuesta promedio y la variabilidad en los tiempos de respuesta también aumentan. Esto es esperado, ya que el sistema tiene que manejar más solicitudes simultaneamente. Aumentando el tiempo pasa lo contrario. Y podemos apreciar que 10.000 usuarios en 1 o 10 segundo sería demasiado para el servidor y que apreciariamos errores.
 
 - **Pruebas sobre la petición 2:**
+- En este caso, los bytes han aumentado mucho; porque el servidor maneja múltiples peticiones simultaneas para la transimisión de video; por ello podemos apreciar peores resultados en cuanto en la respuesta del servidor.
         - **Número de usuarios: 1 (en 1 segundo):**
             ![1 usuario en 1 segundo](Images/Request2/image1.png)
         - **Número de usuarios: 10 (en 1 segundo):**
@@ -88,9 +89,10 @@ En resumen, a medida que aumenta el número de usuarios, el tiempo de respuesta 
         - **Número de usuarios: 1000 (en 100 segundos):**
         En este caso, la CPU se satura y se bloquea la herramienta JMeter, lo que demuestra que el sistema no puede manejar esta carga.
             ![1000 usuarios en 10 segundos](Images/Request2/image5.png)
-        - Número de usuarios: 1000 (en 100 segundos)
+        - **Número de usuarios: 1000 (en 100 segundos):**
         Aunque se ha aumentado el tiempo, la CPU sigue saturándose y el JMeter se bloquea, confirmando que el cuello de botella es claramente la CPU.
             ![1000 usuarios en 100 segundos](Images/Request2/image6.png)
+En resumen, se puede apreciar lo mismo que en la petición 1, cuando aumenta el número de usuarios y el rendimiento será peor. Y que con muchos usuarios (1000 en nuestro caso) la CPU se satura.
 
 3. **Análisis del lado del cliente y del servidor**: Las pruebas se centran en el comportamiento del cliente al realizar peticiones y la capacidad del servidor para manejar dichas solicitudes. En nuesto caso, las pruebas se han realizado sobre un mismo equipo, por lo que ha actuado tanto de cliente como de servidor.
     - **Rendimiento de la CPU:**
