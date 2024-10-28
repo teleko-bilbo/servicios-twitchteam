@@ -15,22 +15,6 @@ Los cuellos de botella limitan el rendimiento y pueden afectar la experiencia de
 
 5. **Tiempo de carga de la página**: La carga inicial de la página puede ser un cuello de botella si se están cargando múltiples recursos pesados, como imágenes y videos.
 
-## Complejidad: (CAMBIAR A LA COMPLEJIDAD VISTA EN CLASE)
-La complejidad de este sistema radica en varios factores que intervienen en el rendimiento y la respuesta del servicio bajo diferentes cargas de usuarios. Estos factores se dividen componentes técnicos y de rendimiento.
-
-1. **Escalabilidad del Servidor**: A medida que aumentamos el número de usuarios concurrentes, el servidor debe ser capaz de gestionar más solicitudes sin degradar su rendimiento. Esto incluye tanto la capacidad de la CPU para procesar múltiples peticiones como la memoria disponible para soportar estas operaciones. A medida que la carga aumenta, la necesidad de recursos se incrementa exponencialmente, lo que hace que mantener la escalabidad del sistema sea un reto.
-
-2. **Manejo de Ancho de Banda**: La transmisión de video es un proceso intensivo de ancho de banda. En un entorno de carga pesada, donde varios usuarios acceden simultáneamente al video, el ancho de banda disponible puede no ser suficiente, generando interrupcines en la reproducción. Gestionar el ancho de banda de manera eficiente y, si es posible, implementar técnicas de compresión o escalabilidad dinámica es esencial para evitar una degradación en la experiencia de usuario.
-
-3. **Codificación y Compresión de Video**: La calidad y el formato del video afectan el tamaño de los archivos, y por lo tanto, la rapidez con la que estos puede ser transmitidos. Los videos en alta definición requieren más recursos y ancho de banda, lo que aumenta la complejidad del sistema al tener que equilibrar la calidad con la eficiencia en la transmisión.
-
-4. **Concurrencia y Sincronización**: La concurrencia de múltiples usuarios simultaneamente solicita procesos de sincronización, gestión de sesiones y acceso controlado a los recursos. En situaciones de alta concurrencia, si el servidor no gestiona adecuadamente las solicitudes, podría experimentar un aumento en los tiempos de espera o incluso colapsar.
-
-5. **Complejida del Tiempo de Respuesta**: El tiempo de respuesta en la página inicial es un factor crucial. Con cada usuario que carga la página, el sistema debe responder de inmediato, procesar imágenes y videos, y hacer el contenido esté disponible rápidamente. Este factor se vuelve má compleko a medida que la cantidad de usuarios aumenta y el servidor necesita realizar más cálculos en menos tiempo.
-
-6. **Optimización de Recursos en JMeter**: La herramienta de JMeter se utiliza para simular y analizar estas cargas, pero también introduce su propia complejidad. Para obtener datos representativos, JMeter debe estar configuraado para manejar altos volumenes de tráfico de manera efectiva, lo que requiere una configuración precisa de los hilos de ejecución, el tiempo de espera y los puntos de interrupción para evaluar correctamente el desempeño del sistema bajo pruebas de carga.
-
-En conjunto, estos factores generan una arquitectura de alto grado de complejidad. Mantener un balance entre eficiencia, escalabilidad y calidad de servicio se convierte en el objetivo clave. Además, es importante identificar y solucionar los cuellos de botella para lograr un sistema robusto que funciones adecuadamente en condiones de carga variables.
 
 ## Pruebas de carga:
 
@@ -89,16 +73,16 @@ En resumen, a medida que aumenta el número de usuarios, el tiempo de respuesta 
 - **Pruebas sobre la petición 2:**
   En este caso, los bytes han aumentado mucho; porque el servidor maneja múltiples peticiones simultaneas para la transimisión de video; por ello podemos apreciar peores resultados en cuanto en la respuesta del servidor.
   - **Número de usuarios: 1 (en 1 segundo):**
-
+ Con un usuario el tiempo de respuesta sigue siendo bajo, pero se aprecia que comparando con la petición 1, en número de bytes enviados es mucho mayor. 
     ![1 usuario en 1 segundo](Images/Request2/image1.png)
   - **Número de usuarios: 10 (en 1 segundo):**
-
+ Con diez usuarios el tiempo de respuesta promedio aumenta ligeramente al igual que la desviación estandar. 
     ![10 usuarios en 1 segundo](Images/Request2/image2.png)
   - **Número de usuarios: 100 (en 1 segundo):**
-
+ Esta vez, con 100 usuarios en 1 segundo se ve como el tiempo de respuesta se dispará, indicando posibles cuellos de botella. 
     ![100 usuarios en 1 segundo](Images/Request2/image3.png)
   - **Número de usuarios: 100 (en 10 segundos):**
-
+Esta vez, teniendo 10 segundos para gestionar las 100 peticiones en vez de 1 segundo, vuelve a tiempos de respuesta más razonables comparable al escenario de 10 usuarios en un segundo. 
     ![100 usuarios en 10 segundos](Images/Request2/image4.png)
   - **Número de usuarios: 1000 (en 100 segundos):**
   En este caso, la CPU se satura y se bloquea la herramienta JMeter, lo que demuestra que el sistema no puede manejar esta carga.
@@ -117,6 +101,29 @@ Para evaluar el rendimiento de CPU durante las pruebas, hemos utilizado la herra
         ![Pocos usuarios](Images/Htop/image1.png)
     - **Rendimiento con muchos usuarios:**
         ![Muchos usuarios](Images/Htop/image2.png)
+      
+## Análisis de Complejidad
+
+En este apartado se analizan dos aspectos fundamentales de la complejidad del servicio: **complejidad temporal** y **complejidad espacial**. Esto implica evaluar cómo el servicio maneja un crecimiento en el número de usuarios \( n \) y cómo afectan estos incrementos tanto en el tiempo de respuesta como en la transmisión de datos.
+
+### Complejidad Temporal
+
+La complejidad temporal se refiere a cómo aumenta el tiempo de servicio conforme incrementa el número de usuarios que acceden simultáneamente. Para este análisis, se han tomado muestras de los tiempos de respuesta promedio (n usuarios en 1 segundo) tanto para la primera como para la segunda petición. Los tiempos obtenidos se representan en la gráfica, donde cada punto corresponde al tiempo de respuesta promedio para un número específico de usuarios.
+![Gráfica complejidad temporal](Images/complejidad/complejidad_temporal_comparacion.png)
+
+Al observar las curvas en la gráfica:
+- La **Petición 1** muestra un aumento de tiempos que sigue una forma polinómica (posiblemente cuadrática o de grado menor en términos de complejidad), aunque se observa un aumento significativo en tiempos para volúmenes altos de usuarios.
+- En el caso de la **Petición 2**, el crecimiento en tiempos de respuesta es aún más pronunciado, lo que sugiere una complejidad de mayor grado que la de la Petición 1. Esta diferencia se debe a que la Petición 2 implica la transmisión de un archivo de video, una operación que consume considerablemente más recursos y tiempo, especialmente cuando el número de usuarios simultáneos aumenta.
+
+En conclusión, ambas curvas pueden modelarse como complejidades polinómicas \( O(n^i) \), donde el grado \( i \) de la Petición 2 es mayor que el de la Petición 1 debido a la sobrecarga adicional en el procesamiento y transmisión de contenido multimedia.
+
+### Complejidad Espacial
+
+La complejidad espacial analiza el consumo de espacio, o en este caso, el **volumen de datos transmitidos** en función del número de usuarios simultáneos. Se evaluó el número de bytes promedio transmitidos por cada solicitud y cómo este número escala con el aumento de usuarios.
+
+Observando los datos de transmisión:
+- El tamaño en bytes promedio por solicitud es constante, es decir, cada usuario recibe una cantidad fija de datos al solicitar el contenido. Por lo tanto, la **complejidad espacial** se puede considerar **lineal**.
+- Cuando el número de usuarios aumenta por un factor de \( n \), los datos transmitidos también aumentan en proporción directa a \( n \). Esto implica que, aunque la carga de datos transmitidos escala con el número de usuarios, el crecimiento es lineal \( O(n) \) y no se observan aumentos superlineales en el uso de recursos de red.
 
 ## Explicación:
 En esta prueba de carga se ha realizado tanto el lado del cliente como el lado del servidor desde un mismo equipo, por lo que el rendimiento de la CPU ha ido peor también, ya que al final está lanzando la aplicación web y a la vez realizando la prueba de carga con JMeter.
