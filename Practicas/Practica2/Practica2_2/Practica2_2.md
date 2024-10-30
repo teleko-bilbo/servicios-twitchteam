@@ -17,5 +17,10 @@ He realizado una prueba de conectividad entre estos equipos que están ya en nue
     - Worker 6:   169.254.
     - Worker 7:   169.254.
 
+### Datos de la base de datos
+- Username: admin
+- Password: maas
+- Email: admin@maas.com
+
 
 ## APARTADO 3
