@@ -84,3 +84,40 @@ Durante la configuración de la autenticación:
 Para entrar a la interfaz gráfica desde el navegador del ***equipo local***: http://localhost:5240/MAAS/r/intro
 
 Para entrar a la interfaz gráfica desde el navegador de un ***equipo remoto***: http://direccionIP:5240/MAAS/r/intro
+
+---------------------------------------------------------------------------------------------------------------
+
+## CONFIGURACIÓN GUI DE MaaS
+
+DNS :  10.10.13.107 10.10.13.108
+
+Ubuntu archive: http://archive.ubuntu.com/ubuntu
+
+Ubuntu extra architectures http://ports.ubuntu.com/ubuntu/ports
+
+Ubuntu releases 22.04 LTS aemd64
+
+Conseguir la llave ssh:
+
+```ssh key-keygen -t rsa -b 4096 -C "admin@maas.com```
+
+
+- file: ~/.ssh/
+- passphrase: 12345678 
+- clave pública: id_rsa_pub
+- clave privada: id_rsa
+
+Importar la clave pública en el MaaS
+
+
+sudo apt install maas-rack-controller --> error
+
+Añadir nueva VLAN: streamflix, VLAN = 100
+
+Añadir nueva subnet: subnet1 192.168.1.0/24
+
+
+Añadir nueva subnet:
+- 
+
+
