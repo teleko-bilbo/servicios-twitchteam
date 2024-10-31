@@ -148,9 +148,9 @@ Hemos realizado una prueba de conectividad previa entre los equipos de nuestra p
 | MaaS        | 169.254.91.29      |
 | Kubernetes  | 169.254.230.138    |
 | VWorker1    | 169.254.216.76     |
-| VWorker2    | 169.254.           |
-| VWorker3    | 169.254.           |
-| VWorker4    | 169.254.           |
-| VWorker5    | 169.254.           |
-| VWorker6    | 169.254.           |
-| VWorker7    | 169.254.           |
+| VWorker2    | 169.254.13.0       |
+| VWorker3    | 169.254.118.155    |
+| VWorker4    | 169.254.101.233    |
+| VWorker5    | 169.254.232.175    |
+| VWorker6    | 169.254.228.182    |
+| VWorker7    | 169.254.91.200     |
