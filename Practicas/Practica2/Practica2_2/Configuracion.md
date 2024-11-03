@@ -3,18 +3,18 @@ Los equipos se han distribuido y organizado de la siguiente forma, donde cada eq
 
 | ID       | Num. Red | Posición     | VMs                                      |  Dirección IP  |
 |----------|----------|--------------|------------------------------------------|----------------|
-|  U110246 | Z1       | Fila 1 – 6   | Client1                                  |  192.168.1.51  |
-|  U110245 | Z2       | Fila 1 – 5   | Client2                                  |  192.168.1.52  |
-|  U110244 | Z3       | Fila 1 – 4   | Client3                                  |  192.168.1.53  |
-|  U110243 | Z4       | Fila 1 – 3   | MaaS, Juju                               |  192.168.1.54  |
-|  U110242 | Z33      | Fila 1 – 2   | k8s_easyrsa, k8s_etcd, k8s_control_plane |  192.168.1.55  |
-|  U110241 | Z31      | Fila 1 - 1   | VWorker1                                 |  192.168.1.56  |
-|  U110253 | Z37      | Fila 3 – 1   | VWorker2                                 |  192.168.1.57  |
-|  U110254 | Z39      | Fila 3 – 2   | VWorker3                                 |  192.168.1.58  |
-|  U110255 | Z16      | Fila 3 – 3   | VWorker4                                 |  192.168.1.59  |
-|  U110256 | Z15      | Fila 3 – 4   | VWorker5                                 |  192.168.1.60  |
-|  U110257 | Z14      | Fila 3 – 5   | VWorker6                                 |  192.168.1.61  |
-|  U110258 | Z13      | Fila 3 - 6   | VWorker7                                 |  192.168.1.62  |
+|  U110246 | Z1       | Fila 1 – 6   | Client1                                  |  192.168.1.1  |
+|  U110245 | Z2       | Fila 1 – 5   | Client2                                  |  192.168.1.2  |
+|  U110244 | Z3       | Fila 1 – 4   | Client3                                  |  192.168.1.3  |
+|  U110243 | Z4       | Fila 1 – 3   | MaaS, Juju                               |  192.168.1.10  |
+|  U110242 | Z33      | Fila 1 – 2   | k8s_easyrsa, k8s_etcd, k8s_control_plane |  192.168.1.  |
+|  U110241 | Z31      | Fila 1 - 1   | VWorker1                                 |  192.168.1.13  |
+|  U110253 | Z37      | Fila 3 – 1   | VWorker2                                 |  192.168.1.11  |
+|  U110254 | Z39      | Fila 3 – 2   | VWorker3                                 |  192.168.1.14  |
+|  U110255 | Z16      | Fila 3 – 3   | VWorker4                                 |  192.168.1.10  |
+|  U110256 | Z15      | Fila 3 – 4   | VWorker5                                 |  192.168.1.18  |
+|  U110257 | Z14      | Fila 3 – 5   | VWorker6                                 |  192.168.1.22  |
+|  U110258 | Z13      | Fila 3 - 6   | VWorker7                                 |  192.168.1.19  |
 
 ## Características de las VM:
 Cada VM tiene las siguientes configuraciones específicas de CPU, RAM y disco duro:
