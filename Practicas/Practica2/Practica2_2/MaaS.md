@@ -120,4 +120,12 @@ Añadir nueva subnet: subnet1 192.168.1.0/24
 Añadir nueva subnet:
 - 
 
+## CONFIGURACIÓN GUI DE MaaS
 
+## CONFIGURACIÓN de Nodos PXE
+Pasos para configurar los nodos:
+- Arranque por red (PXE) de la máquina virtual
+- Descargar el script del repositorio vboxpower
+- Ejecutar el script
+- Deshabilitar las normas de firewall asociadas a Python
+- configurar las llamadas curl: http://<ip>:5241/status on of
