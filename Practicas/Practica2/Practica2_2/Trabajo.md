@@ -1,4 +1,5 @@
 ## Zuhaitz:
+He trabajado sobretodo configurando los equipos (VM). Hemos configurado 8 equipos para que puedan ser arrancados y controlados por el MaaS, y he documentado la configuración.
 
 ## Rubén:
 He configurado junto con Zuhaitz los equipos (VMs) de nuestra red. Hemos creado una VM para cada uno de los clientes (1, 2 y 3) en un equipo diferente, luego otras 3 VMs para Kubernetes en un mismo equipo y luego una VM para cada Worker en un equipo diferente cada una.
