@@ -19,21 +19,21 @@ Los equipos se han distribuido y organizado de la siguiente forma, donde cada eq
 ## Características de las VM:
 Cada VM tiene las siguientes configuraciones específicas de CPU, RAM y disco duro:
 
-| VM                    | Num. CPU | RAM  | Disco |
-|-----------------------|----------|------|-------|
-| Client 1              |          |      |       |
-| Client 2              |          |      |       |
-| Client 3              |          |      |       |
-| MaaS                  | 1        | 8 GB | 50 GB |
-| Juju                  |          |      |       |
-| k8s_easyrsa           | 1        | 4 GB | 30 GB |
-| k8s_etcd              | 2        | 4 GB | 30 GB |
-| k8s_control_plane     | 2        | 4 GB | 30 GB |
-| VWorker1              | 2        | 8 GB | 30 GB |
-| VWorker2              | 2        | 8 GB | 30 GB |
-| VWorker3              | 2        | 8 GB | 30 GB |
-| VWorker4              | 2        | 8 GB | 30 GB |
-| VWorker5              | 2        | 8 GB | 30 GB |
-| VWorker6              | 2        | 8 GB | 30 GB |
-| VWorker7              | 2        | 8 GB | 50 GB |
+| VM                    | Num. CPU | RAM  | Disco |Nombre MaaS|
+|-----------------------|----------|------|-------|-----------|
+| Client 1              |          |      |       ||
+| Client 2              |          |      |       ||
+| Client 3              |          |      |       ||
+| MaaS                  | 1        | 8 GB | 50 GB ||
+| Juju                  | 1        | 8 GB | 50 GB |fair-bedbug|
+| k8s_easyrsa           | 1        | 4 GB | 30 GB |ruling-newt|
+| k8s_etcd              | 2        | 4 GB | 30 GB |caring-osprey|
+| k8s_kubernetes_control_plane| 2        | 4 GB | 30 GB |rare-ant|
+| VWorker1              | 2        | 8 GB | 30 GB |fun-badger|
+| VWorker2              | 2        | 8 GB | 30 GB |clear-goat|
+| VWorker3              | 2        | 8 GB | 30 GB |equal-horse|
+| VWorker4              | 2        | 8 GB | 30 GB |super-wasp|
+| VWorker5              | 2        | 8 GB | 30 GB |gentle-dory|
+| VWorker6              | 2        | 8 GB | 30 GB |game-kiwi|
+| VWorker7              | 2        | 8 GB | 50 GB |big-mantis|
 
