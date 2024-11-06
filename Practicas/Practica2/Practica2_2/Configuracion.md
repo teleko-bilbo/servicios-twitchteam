@@ -25,7 +25,7 @@ Cada VM tiene las siguientes configuraciones específicas de CPU, RAM y disco du
 | Client 2              |          |      |       ||
 | Client 3              |          |      |       ||
 | MaaS                  | 1        | 8 GB | 50 GB ||
-| Juju                  | 1        | 8 GB | 50 GB |fair-bedbug|
+| juju                  | 1        | 8 GB | 50 GB |subte-maggot|
 | k8s_easyrsa           | 1        | 4 GB | 30 GB |ruling-newt|
 | k8s_etcd              | 2        | 4 GB | 30 GB |caring-osprey|
 | k8s_kubernetes_control_plane| 2        | 4 GB | 30 GB |rare-ant|
