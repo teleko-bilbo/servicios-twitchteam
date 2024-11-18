@@ -1,0 +1,5 @@
+REGISTRAMOS LA NUBE MAAS
+Una vez que hemos añadido el cloud con el yaml, añadimos las credenciales. Para ello nos pide el nombre de la credencial, en mi caso sería maasclient, cada cliente a puesto el suyo.
+Despues con el juju credentials se puede ver el cliente.
+
+Luego hemos copiado la id_rsa en los clientes para poder meternos por ssh.
