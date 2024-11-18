@@ -10,8 +10,8 @@ Los equipos se han distribuido y organizado de la siguiente forma, donde cada eq
 |  U110246 | Z1       | Fila 1 – 6   | Client1                                  |  192.168.1.1                           |
 |  U110245 | Z2       | Fila 1 – 5   | Client2                                  |  192.168.1.2                           |
 |  U110244 | Z3       | Fila 1 – 4   | Client3                                  |  192.168.1.3                           |
-|  U110243 | Z4       | Fila 1 – 3   | MaaS, Juju                               |  192.168.1.10, 192.168.1.X             |
-|  U110242 | Z33      | Fila 1 – 2   | K8s_easyrsa, K8s_etcd, K8s_control_plane |  192.168.1.X, 192.168.1.Y, 192.168.1.Z |
+|  U110243 | Z4       | Fila 1 – 3   | MaaS, Juju                               |  192.168.1.10             |
+|  U110242 | Z33      | Fila 1 – 2   | K8s_easyrsa, K8s_etcd, K8s_control_plane |  192.168.1.21 |
 |  U110241 | Z31      | Fila 1 - 1   | VWorker1                                 |  192.168.1.13                          |
 |  U110253 | Z37      | Fila 3 – 1   | VWorker2                                 |  192.168.1.11                          |
 |  U110254 | Z39      | Fila 3 – 2   | VWorker3                                 |  192.168.1.14                          |
@@ -38,23 +38,23 @@ Para configurar la red interna (en nuestro caso, la 192.168.1.0/24), es decir, l
 ## Características de las VM
 Cada VM tiene las siguientes configuraciones específicas de CPU, RAM y disco duro:
 
-| VM                    | Num. CPU | RAM  | Disco |
-|-----------------------|----------|------|-------|
-| Client 1              | 2        | 8 GB | 50 GB |
-| Client 2              | 2        | 8 GB | 50 GB |
-| Client 3              | 2        | 8 GB | 50 GB |
-| MaaS                  | 2        | 8 GB | 50 GB |
-| Juju                  |          |      |       |
-| K8s_easyrsa           | 1        | 4 GB | 30 GB |
-| K8s_etcd              | 2        | 4 GB | 30 GB |
-| K8s_control_plane     | 2        | 4 GB | 30 GB |
-| VWorker1              | 2        | 8 GB | 30 GB |
-| VWorker2              | 2        | 8 GB | 30 GB |
-| VWorker3              | 2        | 8 GB | 30 GB |
-| VWorker4              | 2        | 8 GB | 30 GB |
-| VWorker5              | 2        | 8 GB | 30 GB |
-| VWorker6              | 2        | 8 GB | 30 GB |
-| VWorker7              | 2        | 8 GB | 50 GB |
+| VM                    | Num. CPU | RAM  | Disco |Nombre MaaS|
+|-----------------------|----------|------|-------|-----------|
+| Client 1              | 2        | 8 GB | 50 GB ||
+| Client 2              | 2        | 8 GB | 50 GB ||
+| Client 3              | 2        | 8 GB | 50 GB ||
+| MaaS                  | 2        | 8 GB | 50 GB ||
+| Juju                  | 2        | 8 GB | 50 GB |subte-maggot|
+| K8s_easyrsa           | 1        | 4 GB | 30 GB |ruling-newt|
+| K8s_etcd              | 2        | 4 GB | 30 GB |caring-osprey|
+| K8s_control_plane     | 2        | 4 GB | 30 GB |rare-ant|
+| VWorker1              | 2        | 8 GB | 30 GB |fun-badger|
+| VWorker2              | 2        | 8 GB | 30 GB |clear-goat|
+| VWorker3              | 2        | 8 GB | 30 GB |equal-horse|
+| VWorker4              | 2        | 8 GB | 30 GB |super-wasp|
+| VWorker5              | 2        | 8 GB | 30 GB |gentle-dory|
+| VWorker6              | 2        | 8 GB | 30 GB |game-kiwi|
+| VWorker7              | 2        | 8 GB | 50 GB |big-mantis|
 
 ## Metal as a Service (MaaS)
 MaaS es una solución de administración de infraestructura física que convierte servidores físicos en recursos virtualizados fáciles de gestionar y usar. MaaS permite a los administradores del sistema y desarrolladore tratar servidores físicos de la misma manera que se tratan las VM en la nube, proporcionando una plataforma automatizada para la implementación y gestión de hardware. Este concepto introducido por Canonical nos permite tener una serie de beneficios al usarlo:
@@ -329,10 +329,100 @@ Posteriormente, hemos configurado las siguientes URLs para cada VM:
 
 Estas URLs permiten a MaaS conocer el estado de cada VM y gestionar su encendido y apagado.
 
-8. **Acceso por ssh a los nodos:**
+8. **Acceso por SSH a los nodos:**
 
-Una vez configurados los nodos, hemos accedido a cada uno de ellos por SSH para realizar las siguientes verificaciones:
+Una vez configurados los nodos, hemos accedido a uno de ellos por SSH con el siguiente comando:
+```bash
+ssh ubuntu@[ip]
+```
+
+A continuación, se muestra una captura del acceso por SSH:
+
+![Acceso por SSH](Images/image11.png)
 
 9. **Comprobación de espacio en disco, uso de CPU y uso de RAM:**
 
-Finalmente, hemos comprobado el estado de cada nodo verificando el espacio en disco, el uso de CPU y el uso de memoria RAM para asegurarnos de que cada máquina está preparada para su función en el sistema.
+Finalmente, hemos comprobado el estado de uno de los nodos para verificar su rendimiento y capacidad, revisando el espacio en disco, el uso de CPU y el uso de memoria RAM:
+
+- **Uso de CPU y memoria RAM:** Hemos utilizado el siguiente comando para monitorizar el uso de CPU y memoria RAM:
+  ```bash
+  htop
+  ```
+
+  A continuación, se muestra la salida obtenida:
+
+  ![Uso de CPU y RAM](Images/image12.png)
+
+- **Espacio en disco:** Para verificar el uso y la disponibilidad de las particiones de almacenamiento, hemos utilizado este comando:
+  ```bash
+  df -h
+  ```
+
+  El resultado se muestra en la siguiente captura:
+  
+  ![Espacio en disco](Images/image13.png)
+
+## Ciclo de vida del nodo
+
+![Ciclo de vida del nodo](Images/image14.jpeg)
+
+### **1. ENLISTMENT/NEW**
+
+En esta fase inicial, el nodo es detectado por el sistema de gestión. Este proceso se lleva a cabo automáticamente cuando la máquina se arranca por primera vez en modo PXE, momento en el que se comunica con el servidor MaaS. Durante esta fase:
+
+- El nodo envía información básica de hardware (como ***CPU, RAM, y disco***) al MaaS.
+
+- MaaS registra el nodo en su base de datos, marcándolo como ***NEW***.
+
+- Es responsabilidad del administrador decidir si el nodo será aceptado para pasar a las siguientes fases.
+
+En nuestra práctica, hemos detectado las máquinas virtuales configuradas y las hemos añadido al sistema, lo que ha permitido que estas sean reconocidas y marcadas como disponibles para la siguiente fase.
+
+### **2. COMMISSIONING**
+En esta fase, el nodo se evalúa y configura mínimamente para verificar que cumple los requisitos necesarios para su uso. El proceso incluye:
+
+- Arranque con un sistema operativo ligero en modo ***read-only*** (normalmente a través de HTTP).
+
+- Ejecución de scripts de inventario para identificar el hardware disponible (CPU, RAM, discos, etc.).
+
+- Realización de pruebas de hardware para asegurarse de que todos los componentes funcionan correctamente.
+
+- Actualización del firmware si es necesario. 
+
+Esta fase puede ser relativamente prolongada debido a la cantidad de verificaciones y configuraciones realizadas.
+
+### **3. READY**
+Una vez completada la fase anterior, el nodo está completamente identificado, probado y listo para asignarse a un usuario o proceso. En este estado:
+
+- Se configuran credenciales necesarias para el acceso remoto, como las de la interfaz de gestión del nodo (***Baseboard Management Controller*** o ***BMC***).
+
+- La gestión remota del nodo se realiza mediante protocolos como ***IPMI*** (***Intelligent Platform Management Interface***).
+
+- El nodo queda disponible en el ***pool*** de recursos para ser asignado.
+
+En nuestra práctica, este es el estado en el que hemos dejado las máquinas virtuales preparadas. Sin embargo, hemos probado con una máquina virtual para que pasase por todos los estados.
+
+### **4. ALLOCATED**
+En esta fase, el nodo se asigna a un usuario o equipo para que comience a personalizarlo según sus necesidades. Las actividades típicas incluyen:
+
+- Configuración de la red (direcciones IP, interfaces, etc.).
+
+- Creación de particiones o volúmenes en los discos.
+
+- Instalación inicial de aplicaciones o servicios básicos según los requerimientos.
+
+### **5. DEPLOYING/DEPLOYED**
+En esta fase, el nodo se configura completamente para su propósito final. 
+
+- Durante el estado de ***Deploying***, se instala un sistema operativo completo en el nodo, en nuestro caso ***Ubuntu 22.04***.  
+
+- Una vez completado este proceso, el nodo pasa al estado ***Deployed***, quedando completamente operativo y listo para su uso.
+
+En este estado, el nodo está funcional y preparado para las tareas asignadas, como producción o pruebas.
+
+### **6. RELEASING**
+En la fase final, el nodo se libera para su reutilización o retiro. Este proceso puede incluir:
+
+- Borrado seguro del disco para garantizar la protección de los datos previos.
+
+- Preparación del nodo para volver a un estado anterior, como ***Ready*** o ***New***, dependiendo de si será reutilizado o retirado.

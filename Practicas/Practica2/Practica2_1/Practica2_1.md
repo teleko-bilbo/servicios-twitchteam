@@ -1,4 +1,4 @@
-# PRÁCTICA 2
+# PRÁCTICA 2_1
 
 ### Instalación de Wireshark
 Para instalar Wireshark hay que ejecutar estos comando:

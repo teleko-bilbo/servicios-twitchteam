@@ -1,0 +1,7 @@
+# PRÁCTICA 6
+
+## APARTADO 1
+
+## APARTADO 2
+
+## APARTADO 3
