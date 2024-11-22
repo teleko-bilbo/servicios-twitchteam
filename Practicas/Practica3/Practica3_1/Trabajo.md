@@ -1,5 +1,5 @@
 ## Zuhaitz:
-
+He instalado el cliente Juju e importado la clave id_rsa para hacer la conexión ssh. He ayudado a Rubén a configurar el controlador Juju y los tres hemos estado resolviendo el problema que tuvimos con el dashboard.
 
 ## Rubén:
 En la clase de laboratorio, he instalado un cliente Juju en uno de los equipos cliente. Después, he creado un controlador en el MaaS siguiendo los pasos redactados en el informe de la práctica. Una vez creado el controlador, se ha añadido una máquina, concretamente un Worker, para poder, posteriormente, comprobar su estado, CPU, memoria RAM y espacio de disco duro, conectándonos por SSH a la máquina. Por último, he liberado esa máquina para dejarla en estado ready para la siguiente práctica. En casa, he redactado parte de la documentación que faltaba, de configuraciones realizadas en clase y alguna configuración adicional que nos ha quedado pendiente por hacer.
