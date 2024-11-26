@@ -2,3 +2,6 @@ Para acceder por ssh a los clientes: El fichero id_rsa tiene que ser exportado y
 Errores para solucionar:
 - El vworker1 la configuracion IP esta en unconfigured y los otros tienen autoassigned. No deja hacer deploy.
 - El DHCP que hemos configurado no respeta las IP reservadas que hemos configurado (Por ello nos salia lo del TFTP, asignaba el IP de uno de los clientes)
+
+Hoy martes:
+Hemos configurado los clientes juju, mediante el token que nos ha mandado Ruben que es el que ha configurado el controlador. 
