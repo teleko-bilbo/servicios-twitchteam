@@ -34,7 +34,7 @@ juju remove-unit kubernetes-worker/<unit-id>
 ```
 
 ### Configuración de kubectl
-Configurar el acceso al clúster con kubectl:
+Configurar el acceso al clúster con ***kubectl***:
 - Obtener el fichero de configuración:
 ```bash
 mkdir ~/.kube
@@ -53,7 +53,7 @@ Habilitar el acceso al dashboard web:
 kubectl port-forward service/kubernetes-dashboard -n kubernetes-dashboard 8443:443
 ```
 
-Acceder desde un navegador: https://localhost:8443.
+Acceder desde un navegador: ***https://localhost:8443***.
 
 ### Añadir Kubernetes como cloud en Juju
 Configurar Kubernetes como un cloud para gestionar despliegues:
@@ -207,3 +207,82 @@ sudo journalctl -u tftpd-hpa
 6. **Problemas adicionales al desplegar un Worker:**
 
 Al final, hemos probado a desplegar otro equipo diferente (un ***Worker***) y hemos tenido problemas, ya que no nos dejaba realizar el deploy ya tampoco. El MaaS controller mediante DHCP le asignaba un dirección IP (192.168.1.38) al Worker, pero luego esa dirección que tendría que aparecer en el dashboard del MaaS controller, no aparecía.
+
+7. **Problema con el DHCP y las IPs duplicadas**
+
+Al final, hemos detectado que el servidor DHCP ha asigando una dirección IP ya configurada manualmente en uno de los clientes (192.168.1.3). Esto causaba un error TFTP al intentar comunicarse, ya que había dos equipos con la misma dirección IP.
+
+Para solucionarlo, hemos cambiado la dirección IP del cliente afectado para resolver el conflicto. Ahora el ***juju*** funciona correctamente.
+
+> [!NOTE]
+> Tenemos que revisar la configuración de las direcciones IP reservadas del DHCP, ya que no están siendo respetadas. Para solucionarlo, vamos a asignar estáticamente a los clientes las direcciones 192.168.1.201-202-203 y vamos a excluir estas direcciones en el Maas Controller.
+
+Hemos comprobado en el switch que no hubiese configurado un servidor DHCP que nos estuviese dando problemas, pero hemos verificado que no hay un servidor DHCP configurado en el switch.
+
+Para ello, hemos realizado el siguiente análisis en el switch (***switch3***):
+
+- **Lista de direcciones IP asignadas vacía:**
+El comando `show ip dhcp binding` vacío indica que no se han asignado direcciones IP desde el switch.
+
+![Comando show ip dhcp binding](Images/image1.png)
+
+- **Sin conflictos DHCP:** El comando `show ip dhcp conflict` sin datos confirma que no ha habido conflictos, lo cual es esperado si el switch no está actuando como servidor DHCP.
+
+![Comando show ip dhcp conflict](Images/image2.png)
+
+- **Estadísticas del servidor DHCP:** El comando `show ip dhcp server statistics` muestra que el servidor DHCP está inactivo.
+
+![Comando show ip dhcp server statistics](Images/image3.png)
+
+```bash
+Address pools: 0 # No hay pools configurados.
+Message Sent/Received: 0 # No ha habido tráfico DHCP gestionado por el switch.
+```
+
+- **DHCP Snooping deshabilitado:** El comando `show ip dhcp snooping` muestra que el switch no está inspeccionando solicitudes DHCP en la red, lo cual tampoco interfiere.
+
+![Comando show ip dhcp snooping](Images/image3.png)
+
+8. **Configuración de clientes en *juju***
+
+Hemos configuramos el cliente ***juju*** en otros dos equipos, en los clientes que faltaban (***client1*** y ***client2***). Por lo tanto, desde cliente (***client3***) que creamos el controlador hemos generado un token para realizar la configuración explicada en la [***Practica3_1***](..\Practica3_1\Practica3_1.md). A los dos clientes les hemos dado permisos de ***admin*** y ***superuser***.
+
+9. **Instalación del cluster Kubernetes production-grade con Juju:**
+
+Durante la instalación del clúster Kubernetes production-grade con Juju, hemos tenido un problema relacionado con los permisos del fichero `k8s-overlay.yaml`. Este fichero lo habíamos creado utilizando *sudo*, lo que había asignado permisos de ***root*** en lugar de ***student***, el usuario requerido. Como resultado, al ejecutar el siguiente comando, se generaba un error indicando que no se podía encontrar el fichero:
+```bash
+juju deploy charmed-kubernetes --overlay k8s-overlay.yaml
+```
+
+Para solucionarlo, hemos cambiado los permisos de ***root*** a ***student*** haciendo uso del siguiente comando:
+```bash
+sudo chown student:student k8s-overlay.yaml
+```
+
+10. **Conexión SSH y manejo de claves:**
+
+Al realizar una conexión SSH desde las equipos clientes hemos detectado que no funcionaba aun teniendo la clave privada SSH en cada uno de los clientes. El problema estaba que al copiar y pegar el contenido del `id_rsa` no se había copiado correctamente. 
+
+Para solucionarlo, hemos exportado la clave privada y la hemos compartido de forma segura (por correo electrónico en lugar de usar el repositorio). Asimismo, hemos tenido que realizar una configuración adicional para que funcionase. Hemos tenido que cambiar los permisos de la clave privada `id_rsa` para que solo el propietario tenga acceso, usando: 
+```bash
+chmod 600 ~/.ssh/id_rsa
+```
+
+## Errores pendientes por solucionar  
+
+1. **Problema con la configuración de la dirección IP en *Worker1*:**  
+
+La dirección IP del **Worker1** en el Maas controller aparece como "***unconfigured***", mientras que los otros clientes tienen "***autoassigned***", lo que nos impide realizar despliegues en esta máquina.
+
+2. **Problemas con el DHCP:**
+- El servidor DHCP no ha respetado las IP reservadas configuradas, ya que nos ha asignado direcciones IP de ambos rangos, del excluido y del no excluido.
+
+- Este problema ha sido la causa del error inicial del TFTP, al asignar una IP ya utilizada por un cliente.
+
+## Recomendaciones y próximos pasos  
+
+1. Reconfigurar el DHCP para garantizar que respete las IP reservadas.
+
+2. Verificar y corregir la configuración de red en ***Worker1***.  
+
+3. Terminar la práctica (Añadir soporte de almacenamiento mediante Longhorn, acceder a dashboard de Kubernetes y emplear comandos kubectl para comparar con el dashboard, acceder al dashboard de Longhorn)
