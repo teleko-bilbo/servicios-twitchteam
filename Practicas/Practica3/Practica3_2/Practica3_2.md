@@ -275,14 +275,22 @@ chmod 600 ~/.ssh/id_rsa
 La dirección IP del **Worker1** en el Maas controller aparece como "***unconfigured***", mientras que los otros clientes tienen "***autoassigned***", lo que nos impide realizar despliegues en esta máquina.
 
 2. **Problemas con el DHCP:**
-- El servidor DHCP no ha respetado las IP reservadas configuradas, ya que nos ha asignado direcciones IP de ambos rangos, del excluido y del no excluido.
 
-- Este problema ha sido la causa del error inicial del TFTP, al asignar una IP ya utilizada por un cliente.
+Desde un principio, habíamos configurado mal la exclusión de rangos de direcciones IPs (lo teníamos en modo dinámico). Esto fue un error debido a que hay dos formas posibles:
 
-## Recomendaciones y próximos pasos  
+ - **Rangos reservados:** En ***subredes gestionadas***, MaaS **NO** asigna direcciones IP en este rango, en cambio, en ***subredes no gestionadas***, MaaS **SÓLO** asigna direcciones IP dentro de ese rango.
 
-1. Reconfigurar el DHCP para garantizar que respete las IP reservadas.
+ - **Rangos dinámicos:** En ***subredes gestionadas***, MaaS utiliza ese rango para procesos como enlistamiento, commissioning y DHCP gestionado. Sin embargo, en ***subredes no gestionadas***, MaaS **NO** asigna direcciones IPs dentro de ese rango.
 
-2. Verificar y corregir la configuración de red en ***Worker1***.  
+Teníamos configurado un rango dinámico entre 192.168.1.11 y 192.168.1.254, pensando que esto asignaría direcciones en ese rango. Sin embargo, pasaba lo contrario, MaaS estaba excluyendo estas direcciones y asignaba IPs de 192.168.1.1 a 192.168.1.9, excepto la 192.168.1.10 que es la dirección IP del MaaS controller que hace de gateway.
 
-3. Terminar la práctica (Añadir soporte de almacenamiento mediante Longhorn, acceder a dashboard de Kubernetes y emplear comandos kubectl para comparar con el dashboard, acceder al dashboard de Longhorn)
+Para solucionarlo, hemos cambiado el rango dinámico a un rango reservado entre 192.168.1.10 y 192.168.1.40, de forma que al ser un rango reservado en una subred gestionada, MaaS no va a asignar direcciones en ese rango. 
+
+Además, hemos configurado manualmente las direcciones IP de los equipos físicos dentro de este rango (192.168.1.10 - 192.168.1.40), por lo que hemos deshabilitado la asignación automática por DHCP.
+
+Asimismo, hemos creado un rango reservado adicional enrte 192.168.1.50 y 192.168.1.60 para más adelante.
+
+Este problema ha sido la causa del error inicial del TFTP (***TFTP timeout***), ya que asignaba una dirección IP ya utilizada por uno de los clientes.
+
+## Próximos pasos
+Terminar la práctica (Añadir soporte de almacenamiento mediante Longhorn, acceder a dashboard de Kubernetes y emplear comandos kubectl para comparar con el dashboard, acceder al dashboard de Longhorn)

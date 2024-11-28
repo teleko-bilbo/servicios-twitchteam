@@ -1,1 +1,0 @@
-Hoy hemos cambiado en el maas los IP reservados. Hemos reservado de la IP 192.168.1.10 hasta la 192.168.1.40 y de la 192.168.1.50 hasta la  192.168.1.60. Y hemos quitado de asigancion por DHCP a manuales

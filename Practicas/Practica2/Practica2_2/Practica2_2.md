@@ -7,9 +7,9 @@ Los equipos se han distribuido y organizado de la siguiente forma, donde cada eq
 
 | ID       | Num. Red | Posición     | VMs                                      |  Dirección IP                          |
 |----------|----------|--------------|------------------------------------------|----------------------------------------|
-|  U110246 | Z1       | Fila 1 – 6   | Client1                                  |  192.168.1.201                           |
-|  U110245 | Z2       | Fila 1 – 5   | Client2                                  |  192.168.1.202                           |
-|  U110244 | Z3       | Fila 1 – 4   | Client3                                  |  192.168.1.203                           |
+|  U110246 | Z1       | Fila 1 – 6   | Client1                                  |  192.168.1.31                           |
+|  U110245 | Z2       | Fila 1 – 5   | Client2                                  |  192.168.1.32                           |
+|  U110244 | Z3       | Fila 1 – 4   | Client3                                  |  192.168.1.33                           |
 |  U110243 | Z4       | Fila 1 – 3   | MaaS, Juju                               |  192.168.1.10             |
 |  U110242 | Z33      | Fila 1 – 2   | K8s_easyrsa, K8s_etcd, K8s_control_plane |  192.168.1.21 |
 |  U110241 | Z31      | Fila 1 - 1   | VWorker1                                 |  192.168.1.13                          |
