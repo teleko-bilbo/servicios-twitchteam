@@ -48,7 +48,7 @@ Cada VM tiene las siguientes configuraciones específicas de CPU, RAM y disco du
 | K8s_easyrsa           | 1        | 4 GB | 30 GB |ruling-newt|
 | K8s_etcd              | 2        | 4 GB | 30 GB |caring-osprey|
 | K8s_control_plane     | 2        | 4 GB | 30 GB |rare-ant|
-| VWorker1              | 2        | 8 GB | 30 GB |fun-badger|
+| VWorker1              | 2        | 8 GB | 30 GB |crack-cicada|
 | VWorker2              | 2        | 8 GB | 30 GB |clear-goat|
 | VWorker3              | 2        | 8 GB | 30 GB |equal-horse|
 | VWorker4              | 2        | 8 GB | 30 GB |super-wasp|

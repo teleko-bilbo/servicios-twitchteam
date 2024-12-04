@@ -35,16 +35,16 @@ juju remove-unit kubernetes-worker/<unit-id>
 
 ### Configuración de kubectl
 Configurar el acceso al clúster con ***kubectl***:
-- Obtener el fichero de configuración:
-```bash
-mkdir ~/.kube
-juju ssh kubernetes-control-plane/1 -- cat config > ~/.kube/config
-```
-
 - Instalar ***kubectl*** y verificar la versión:
 ```bash
 sudo snap install kubectl --classic
 kubectl version
+```
+
+- Obtener el fichero de configuración:
+```bash
+mkdir ~/.kube
+juju ssh kubernetes-control-plane/1 -- cat config > ~/.kube/config
 ```
 
 ### Acesso al dashboard de Kubernetes
@@ -54,6 +54,10 @@ kubectl port-forward service/kubernetes-dashboard -n kubernetes-dashboard 8443:4
 ```
 
 Acceder desde un navegador: ***https://localhost:8443***.
+
+![Dashboard de Kubernetes (Pods)](Images/image5.png)
+![Dashbaord de Kuberneets (Nodes)](Images/image6.png)
+![Dashbaord de Kuberneets (Nodes)](Images/image7.png)
 
 ### Añadir Kubernetes como cloud en Juju
 Configurar Kubernetes como un cloud para gestionar despliegues:
@@ -65,10 +69,9 @@ juju bootstrap k8s-cloud
 ## Helm
 ### Instalar Helm
 ```bash
-sudo curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-sudo chmod 700 get_helm.sh
-sudo ./get_helm.sh
+sudo snap install helm --classic
 ```
+
 ### Repositorios de charts
 Helm es un gestor de paquetes (charts) para Kubernetes.
 
@@ -137,7 +140,10 @@ helm install longhorn longhorn/longhorn --namespace longhorn-system --create-nam
 kubectl port-forward service/longhorn-frontend -n longhorn-system 8001:80
 ```
 
-Acceder desde un navegador: http://localhost:8001.
+Acceder desde un navegador: ***http://localhost:8001***
+
+![Dahsboard de Longhorn](Images/image8.png)
+![Dahsboard de Longhorn (Node)](Images/image9.png)
 
 ## Problemas y pruebas realizadas
 Durante la práctica, hemos tenido problemas a la hora de arrancar el Juju controller, ya que al iniciar la MV de este, el MaaS controller le asignaba una dirección IP dentro del rango de direcciones configurado (192.168.1.3, concretamente), pero luego en el paso de TFTP el Juju controller realizaba un TFTP Request al MaaS controller, pero este último no respondía, provocando un error ***PXE-E32: TFTP open timeout***.
@@ -268,29 +274,22 @@ Para solucionarlo, hemos exportado la clave privada y la hemos compartido de for
 chmod 600 ~/.ssh/id_rsa
 ```
 
-## Errores pendientes por solucionar  
+11. **Problemas con el DHCP:**
 
-1. **Problema con la configuración de la dirección IP en *Worker1*:**  
+Hemos tenido problemas con el DHCP, debido a la forma en la que teníamos configurado el rango en la subred. Hay dos tipos de rangos:
 
-La dirección IP del **Worker1** en el Maas controller aparece como "***unconfigured***", mientras que los otros clientes tienen "***autoassigned***", lo que nos impide realizar despliegues en esta máquina.
+- **Rangos reservados:** En ***subredes gestionadas***, MaaS **NO** asigna direcciones IP en este rango, en cambio, en ***subredes no gestionadas***, MaaS **SÓLO** asigna direcciones IP dentro de ese rango.
 
-2. **Problemas con el DHCP:**
+- **Rangos dinámicos:** En ***subredes gestionadas***, MaaS utiliza ese rango para procesos como enlistamiento, commissioning y DHCP gestionado. Sin embargo, en ***subredes no gestionadas***, MaaS **NO** asigna direcciones IPs dentro de ese rango.
 
-Desde un principio, habíamos configurado mal la exclusión de rangos de direcciones IPs (lo teníamos en modo dinámico). Esto fue un error debido a que hay dos formas posibles:
-
- - **Rangos reservados:** En ***subredes gestionadas***, MaaS **NO** asigna direcciones IP en este rango, en cambio, en ***subredes no gestionadas***, MaaS **SÓLO** asigna direcciones IP dentro de ese rango.
-
- - **Rangos dinámicos:** En ***subredes gestionadas***, MaaS utiliza ese rango para procesos como enlistamiento, commissioning y DHCP gestionado. Sin embargo, en ***subredes no gestionadas***, MaaS **NO** asigna direcciones IPs dentro de ese rango.
-
-Teníamos configurado un rango dinámico entre 192.168.1.11 y 192.168.1.254, pensando que esto asignaría direcciones en ese rango. Sin embargo, pasaba lo contrario, MaaS estaba excluyendo estas direcciones y asignaba IPs de 192.168.1.1 a 192.168.1.9, excepto la 192.168.1.10 que es la dirección IP del MaaS controller que hace de gateway.
+En un principio, teníamos configurado un rango dinámico entre 192.168.1.11 y 192.168.1.254, las cuales eran usadas, como dice la documentación, en procesos de enlistamiento, commissioning y DHCP gestionado. Por lo tanto, para procesos de despligue utilizaba direcciones IP fuera de ese rango, por lo que entraba en conflicto con direcciones IP reservadas.
 
 Para solucionarlo, hemos cambiado el rango dinámico a un rango reservado entre 192.168.1.10 y 192.168.1.40, de forma que al ser un rango reservado en una subred gestionada, MaaS no va a asignar direcciones en ese rango. 
 
 Además, hemos configurado manualmente las direcciones IP de los equipos físicos dentro de este rango (192.168.1.10 - 192.168.1.40), por lo que hemos deshabilitado la asignación automática por DHCP.
 
-Asimismo, hemos creado un rango reservado adicional enrte 192.168.1.50 y 192.168.1.60 para más adelante.
+Asimismo, hemos creado un rango reservado adicional entre 192.168.1.50 y 192.168.1.60 para más adelante.
 
 Este problema ha sido la causa del error inicial del TFTP (***TFTP timeout***), ya que asignaba una dirección IP ya utilizada por uno de los clientes.
 
-## Próximos pasos
-Terminar la práctica (Añadir soporte de almacenamiento mediante Longhorn, acceder a dashboard de Kubernetes y emplear comandos kubectl para comparar con el dashboard, acceder al dashboard de Longhorn)
+Sin embargo, el siguiente día de laboratorio, nos dimos cuenta que seguíamos teniendo problemas, ya que era necesario contar con un rango dinámico a parte del rango reservado, por lo tanto, tuvimos que configurar un rango dinámico (192.168.1.200 - 192.168.1.254). De esta forma, asignará direcciones IP en ese rango (indicado por el rango dinámico) y reservará las direcciones IP en el otro rango (indicado por el rango reservado).
