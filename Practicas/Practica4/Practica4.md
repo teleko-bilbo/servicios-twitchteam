@@ -1,12 +1,12 @@
 # PRÁCTICA 4
 
-## APARTADO 1
+## PRIMERA PARTE
+Cada uno ha echo su trabajo en casa
 
-## APARTADO 2
+## SEGUNDA PARTE
 
-## APARTADO 3
-
-## Comandos
+### Comandos
+Aquí adjuntamos los comandos necesarios para hacer la práctica, que no vamos a poder hacerlo en clase.
 
 ### Cliente Kubectl
 - **Ayuda:**
@@ -303,7 +303,7 @@ Utiliza **selector** para identificar los pods a los que redrigir el tráfico
 Emplea una IP fija (**Cluster IP**: que es una IP interna "no es la real del equipo") y un nombre **DNS** estables:
     - Se puede acceder al servicio aunque la IP de los pods cambie
     - Únicamente accesibles desde dentro del cluster (el cluster IP hará el balanceo)
-#DNS automático: kuard.dyd.svc.cluster.local
+**DNS automático**: kuard.dyd.svc.cluster.local
     -kuard: nombre del servicio
     -dyd: espacio de nombres
     -svc: servicio (podría exponer otro tipo de objetos)
@@ -348,10 +348,10 @@ ssh -N -L 1234:10.152.183.102:8080 ubuntu@192.168.13.30   # Balanceo por Cluster
 kubectl delete service kuard
 kubectl delete services,deployments -l app
 ```
-#NodePort
--Se configura un puerto (elegido automático/manual) en cada nodo para poder exponer el servicio al exterior. 
--kube-proxy intercepta las peticiones a ese puerto y las redirige al servicio
--Podemos hacer un port-forward para así acceder desde el exterior al servicio a través de un nodo específico
+**NodePort**
+- Se configura un puerto (elegido automático/manual) en cada nodo para poder exponer el servicio al exterior. 
+- kube-proxy intercepta las peticiones a ese puerto y las redirige al servicio
+- Podemos hacer un port-forward para así acceder desde el exterior al servicio a través de un nodo específico
 -Si el nodo cae perdemos la conexión al servicio
 
 ```bash
@@ -364,10 +364,12 @@ kubectl describe service kuard
 # Acceso a través del nuevo puerto en un nodo cualquiera
 # http://192.168.13.26:32060
 ```
-#### 4. StatefulSet
 
-#### 5. DaemonSet
+## FUERA DE LA PRÁCTICA PERO UN ERROR QUE TENÍAMOS: ACCESO MEDIANTE SSH
 
-#### 6. Job
+Para que los clientes puedan acceder mediante SSH a las maquinas de juju es necesario registrar la clave pública en Juju sino unicamente el cotrolador podra hacerlo.
+Por ello, si los clientes tienen la privada pueden generar la pública. Y después para registrar se utiliza el siguiente comando:
 
-#### 7. CronJob
+```bash
+juju add-ssh-key "$(cat ~/.ssh/id_rsa.pub)"
+```
