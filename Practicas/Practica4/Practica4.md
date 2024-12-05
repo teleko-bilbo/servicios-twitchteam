@@ -1,7 +1,7 @@
 # PRÁCTICA 4
 
 ## PRIMERA PARTE
-Cada uno ha echo su trabajo en casa
+Cada uno ha hecho su trabajo en casa.
 
 ## SEGUNDA PARTE
 
@@ -373,3 +373,11 @@ Por ello, si los clientes tienen la privada pueden generar la pública. Y despu�
 ```bash
 juju add-ssh-key "$(cat ~/.ssh/id_rsa.pub)"
 ```
+
+## SOLUCIÓN DEL ERROR DEL DESPLIEGUE DE UN POD:
+
+student@vbox:~$ juju config calico cidr
+192.168.0.0/16
+student@vbox:~$ juju config calico cidr=10.245.0.0/16
+student@vbox:~$ kubectl rollout restart daemonset/calico-node -n kube-system
+daemonset.apps/calico-node restarted
