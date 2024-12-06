@@ -376,8 +376,41 @@ juju add-ssh-key "$(cat ~/.ssh/id_rsa.pub)"
 
 ## SOLUCIÓN DEL ERROR DEL DESPLIEGUE DE UN POD:
 
-student@vbox:~$ juju config calico cidr
-192.168.0.0/16
-student@vbox:~$ juju config calico cidr=10.245.0.0/16
-student@vbox:~$ kubectl rollout restart daemonset/calico-node -n kube-system
-daemonset.apps/calico-node restarted
+Durante el despliegue de nuestro clúster de Kubernetes, los pods no lograban desplegarse correctamente debido a un conflicto de redes. Calico, el conponente de red (CNI) configurado para gestionar las redes de pods, estaba utilizando el rango ``192.168.0.0/16``. Este rango coincidía con la red física de nuestra infraestructura, lo que generó un solapamiento de direcciones IP.
+
+### **Causa:**
+
+Calico asigna direcciones IP a los pods dentro del rango CIDR configurado. Al coincidir este rango con el de nuestra red física:
+    - Los paquetes dirigidos a pods dentro del clúster se perdían, ya que los router locales interpretaban que pertenecían a la red física.
+    - Esto impedía la comunicación de pods, bloqueando su despliegue.
+
+### **Solución aplicada:**
+
+Para resolver etse problema, cambiamos el rango CIDR utolizado por Calico y reiniciamos el componente para aplicar los cambios. Los pasos realizados fueros los siguientes:
+
+**1. Comprobamos el rango CIDR actual utilizado por Calico:**
+
+```bash
+juju config calico cidr
+```
+Este comando devolvió el rango ``192.168.0.0/16``, confirmando que era el origen del conflicto.
+    
+**2. Actualizamos el rango CIDR a uno que no estuviera en conflicto con nuestra red física**:
+Elegimos el rango ``10.245.0.0/16``, que no se solapaba con ninguna red existente en nuestra      infraestructura.
+    
+ ```bash
+ juju config calico cidr=10.245.0.0/16
+ ```
+    
+**3. Reiniciamos los pods del DaemonSet ``calico-node`` para aplicar los cambios:** Para que     Calico utilizara el nuevo rango, reiniciamos los pods del DaemonSet responsable de la red:
+
+```bash
+kubectl rollout restart daemonset/calico-node -n kube-system
+```
+
+### **Resultado:**
+
+Tras aplicar los cambios:
+- El nuevo rango 10.245.0.0/16 evitó el conflicto con la red física.
+- Los pods pudieron desplegarse correctamente
+- La conectividad dentro del clúster fue restaurada
