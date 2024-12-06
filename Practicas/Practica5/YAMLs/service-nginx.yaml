@@ -1,0 +1,15 @@
+apiVersion: v1       # Versión de la API
+kind: Service        # Tipo de objeto
+metadata:            # Metadatos del objeto
+  name: nginx-service
+  namespace: ingress-nginx-kubernetes-worker
+spec:                # Especificaciones del servicio
+  ports:             # Puertos del servicio
+  - port: 80       # Puerto expuesto
+    targetPort: 8080 # Puerto al que se redirige
+    protocol: TCP    # Protocolo utilizado
+  selector:          # Selección de pods
+    app.kubernetes.io/name: ingress-nginx-kubernetes-worker
+    app.kubernetes.io/part-of: ingress-nginx-kubernetes-worker
+    controller-revision-hash: bcf8b9b9b
+  type: LoadBalancer    # Tipo de servicio
