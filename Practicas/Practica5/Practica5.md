@@ -26,7 +26,9 @@ helm install -n metallb metallb bitnami/detallb --create-namespace
 - **`helm repo update`**: Actualiza la lista de charts disponibles en el repositorio.
 - **`helm install`**: Instala MetalLB en el espacio de nombres `metallb`, creando el namespace si no existe.
 
-**imagen metallb
+En esta imagen se aprecían los elementos que se han desplegado con el nameservice 'metallb':  
+![elementos metallb](Images/image1.png)
+
 
 #### Configuración de MetalLB
 Una vez instalado MetalLB, es necesario configurarlo para asignar rangos de direcciones IP disponibles para los servicios tipo LoadBalancer. Esto se hace mediante un archivo de configuración YAML. El archivo `metallb.yaml` contiene la siguiente configuración:
@@ -53,10 +55,12 @@ spec:
 #### Características importantes del archivo de configuración:
 - **Namespace**: El namespace especificado es `metallb`.
 - **L2Advertisement**: Define cómo se anunciarán las direcciones IP disponibles.
-- **IPAddressPool**: Especifica el rango de direcciones IP (en este caso, de `192.168.1.50` a `192.168.1.60`) que se asignarán a los servicios tipo LoadBalancer.
+- **IPAddressPool**: Especifica el rango de direcciones IP (en este caso, de `192.168.1.50` a `192.168.1.60`) que se asignarán a los servicios tipo LoadBalancer. 
+> [!NOTE]  
+> Este rango de direcciones está reservado desde el controlador MaaS, para que no se puedan asignar dinámicamente.
 
 
-### b.Cambiar el servicio kuard de la práctica anterior a tipo LoadBalancer
+### Cambiar el servicio kuard de la práctica anterior a tipo LoadBalancer
 Hemos desplegados los yml de Deployment y Serivce de la practica anterior. "deployment.yaml" y "service.yaml" (hay que subir al repo): --
 Serivce.yaml:
 - namespace streamflix
