@@ -61,9 +61,9 @@ Una vez cofigurado se ha desplegado el YAML:
 kubectl apply -f metallb.yaml
 ```
 
-En esta imagen se aprecían los elementos que se han desplegado con el nameservice `metallb`:
+En esta imagen se aprecían los recursos que se han desplegado con el nameservice `metallb`:
 
-![elementos metallb](images/image1.PNG)
+![recursos metallb](images/image1.PNG)
 
 
 ### Cambiar el servicio kuard de la práctica anterior a tipo LoadBalancer
@@ -153,18 +153,88 @@ Esto se puede observar en las siguientes imágenes, donde se muestra la informac
 
 ![info POd3](images/image5.PNG)
 
+
+
+Las direcciones IP de lo nodos son: 10.245.
 De este modo, se comprueba que el LoadBalancer está equilibrando eficazmente el tráfico entre los pods, asegurando la alta disponibilidad del servicio.
 
 ## APARTADO 2: Ingress
-### a.Exponer un servico ingress-nginx de tipo LoadBalancer entre los pods ingress-nginx-kubernetes-worker
-**imagen: get all -n nginx
-Para crear el yaml hemos tenido que consultar las etiquetas que tenian estos pods con el comando: 
+
+Ingress es un recurso avanzado de Kubernetes que permite gestionar el acceso a los servicios dentro de un clúster desde el exterior. A diferencia de los servicios tradicionales tipo `NodePort` o `LoadBalancer`, que operan a nivel de red (capa L4, es decir, TCP/UDP), Ingress permite un balanceo a nivel de aplicación (capa L7), ofreciendo funcionalidades más avanzadas para enrutar el tráfico y controlar cómo los servicios responden a las solicitudes.
+
+Los servicios básicos en Kubernetes realizan un balanceo de carga a nivel L4:
+
+- **NodePort**: Proporciona un puerto único para cada servicio, que se expone en todos los nodos del clúster. El tráfico entrante a ese puerto se redirige al servicio correspondiente.
+- **LoadBalancer**: A diferencia de `NodePort`, este servicio asigna una IP externa diferente para cada servicio, de modo que el tráfico entrante se balancea automáticamente entre las réplicas del servicio.
+
+Sin embargo, Ingress opera a un nivel superior (L7) y permite realizar balanceo de carga y enrutar el tráfico HTTP/HTTPS de manera más específica. Entre sus capacidades destacan:
+
+1. **Virtual Hosting**: Con Ingress, es posible configurar múltiples servicios en un mismo clúster, diferenciándolos según el host de la cabecera HTTP (por ejemplo, `streamflix1.dyd.eus` y `streamflix2.dyd.eus`). Esto permite asignar diferentes servidores a cada nombre de dominio o subdominio, sin necesidad de exponer múltiples IPs externas. 
+
+2. **Reverse Proxy**: Ingress también actúa como un reverse proxy, lo que significa que puede enrutar las solicitudes de entrada no solo basándose en el host, sino también en la URL solicitada. Esto permite realizar balanceo de carga avanzado, enrutamiento según la URL (por ejemplo, `/movies`, `/tvshows`), caché de contenido, reescritura de URLs, y mucho más.
+
+### Exponer un servico ingress-nginx de tipo LoadBalancer entre los pods ingress-nginx-kubernetes-worker
+En el entorno de Charmed Kubernetes, ya viene instalado un controlador Ingress llamado ingress-nginx-kubernetes-worker. Este controlador debe ser configurado adecuadamente para exponer los servicios de Kubernetes al exterior. Para ello, se utiliza el comando kubectl get all -n nginx para visualizar los recursos desplegados en el namespace nginx.
+
+Comando utilizado para ver los recursos desplegados:
+```bash
+kubectl get all -n ingress-nginx-kubernetes-worker
+```
+![recursos ingress](images/image6.PNG)
+
+En la imagen se muestran los siguientes recursos:
+
+- **Pods**: Hay desplegados varios pods del controlador `nginx-ingress-controller-kubernetes-worker`, todos en estado `Running` y con diferentes tiempos de vida y reinicios.
+  
+- **DaemonSet**: Hay desplegado un DaemonSet llamado `nginx-ingress-controller-kubernetes-worker` con un total de 4 réplicas deseadas y 4 disponibles. Este DaemonSet asegura que cada nodo tenga una réplica del pod del controlador Ingress, y todas las réplicas están disponibles y operativas.
+
+#### Configuración para exponer el Ingress
+
+Una vez identificados los elementos y pods del controlador Ingress, se procede a configurar un Ingress para exponer los servicios necesarios. Para ello, se consulta la etiqueta (label) de los pods del namespace `nginx` con el siguiente comando:
+
 ```bash
 kubectl get pods -n ingress-nginx-kubernetes-worker -o wide --show-labels
 ```
-** imagen: nginx labels
-hemos construido el service-nginx.yaml (hay que subir al repo) 
-** imagen: ningx expuesto
+![ingress etiquetas](images/image7.PNG)
+
+Una vez identificadas las etiquetas, se configura el servicio Ingress con el siguiente archivo YAML, denominado `streamflix-ingress.yaml`:
+
+```yaml
+apiVersion: v1       # Versión de la API
+kind: Service        # Tipo de objeto
+metadata:            # Metadatos del objeto
+  name: nginx-service
+  namespace: ingress-nginx-kubernetes-worker
+spec:                # Especificaciones del servicio
+  ports:             # Puertos del servicio
+  - port: 80       # Puerto expuesto
+    targetPort: 8080 # Puerto al que se redirige
+    protocol: TCP    # Protocolo utilizado
+  selector:          # Selección de pods
+    app.kubernetes.io/name: ingress-nginx-kubernetes-worker
+    app.kubernetes.io/part-of: ingress-nginx-kubernetes-worker
+    controller-revision-hash: bcf8b9b9b
+  type: LoadBalancer    # Tipo de servicio
+```
+### Características destacables de `service-nginx.yaml`
+
+- **kind**: El tipo de objeto es un `Service`, que se utiliza para exponer una aplicación que se ejecuta en un conjunto de Pods de Kubernetes.
+- **metadata**:
+  - **name**: El nombre del servicio es `nginx-service`.
+  - **namespace**: El servicio está en el namespace `ingress-nginx-kubernetes-worker`, lo que lo aísla dentro de este entorno específico.
+  
+- **spec**:
+  - **ports**: El servicio expone el puerto `80` (puerto accesible externamente) y redirige las solicitudes al puerto `8080` del contenedor del pod correspondiente, utilizando el protocolo TCP.
+  - **selector**: Este campo especifica las etiquetas que el servicio usa para seleccionar los pods a los cuales debe redirigir el tráfico. En este caso, el selector está basado en las siguientes etiquetas:
+    - `app.kubernetes.io/name: ingress-nginx-kubernetes-worker`
+    - `app.kubernetes.io/part-of: ingress-nginx-kubernetes-worker`
+    - `controller-revision-hash: bcf8b9b9b`
+  - **type**: Se ha definido como un `LoadBalancer`, lo que indica que Kubernetes configurará un balanceador de carga externo para el servicio, asignando una IP externa para acceder al servicio.
+
+En la siguiente imagen se puede observar cómo se ha agregado este servicio a los recursos desplegados:
+
+![ingress serivicio expuesto](images/image8.PNG)
+
 ### b.Hacer un segundo Deployment y servicio similar al de la práctica anterior
 deploy-nginx.yaml con nombre diferente
 service2.yaml con nobmre diferente
