@@ -4,4 +4,6 @@ Mi contribución principal en esta práctica ha sido la documentación. Me he en
 
 
 ## Olatz:
+En esta práctica, he contribuido al cambio del servicio al tipo LoadBalancer y he trabajado en el acceso mediante una IP externa para comprobar que se realice el balanceo correctamente. También hemos comenzado con la configuración de la parte de Ingress. Mi contribución principal fue ajustar los archivos yaml para desplegarlos de manera correcta, pero conté con la ayuda de mis compañeros para asegurarnos de que estábamos haciendo los cambios de manera adecuada.
+
 
