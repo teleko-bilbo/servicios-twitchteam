@@ -372,6 +372,6 @@ spec:
 ### E. Conectarse desde el navegador web empleando los diferentes nombres y comprobar que responde el servicio asociado a ese nombre y que se balancea entre los pods del servicio
 
 > [!NOTE]
-> En la práctica de clase se llego hasta aquí y conseguimos verificar el servicio de Ingress desde el navegador web. 
+> En la práctica de clase se llego hasta aquí y no conseguimos verificar el servicio de Ingress desde el navegador web. 
 
 ## APARTADO 3
