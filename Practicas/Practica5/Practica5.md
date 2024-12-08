@@ -166,13 +166,6 @@ Esto se puede observar en las siguientes imágenes, donde se muestra la informac
 ![Balanceo en el pod 2](images/image4.PNG)
 ![Balanceo en el pod 3](images/image5.PNG)
 
-![info POd1](images/image3.PNG)
-
-![info POd2](images/image4.PNG)
-
-![info POd3](images/image5.PNG)
-
-
 Las direcciones IP de lo nodos son: 10.245.123.193, 10.245.112.67 y 10.245.234.1. 
 De este modo, se comprueba que el LoadBalancer está equilibrando eficazmente el tráfico entre los pods, asegurando la alta disponibilidad del servicio.
 
@@ -249,15 +242,65 @@ spec:                # Especificaciones del servicio
     - `controller-revision-hash: bcf8b9b9b`
   - **type**: Se ha definido como un `LoadBalancer`, lo que indica que Kubernetes configurará un balanceador de carga externo para el servicio, asignando una IP externa para acceder al servicio.
 
-En la siguiente imagen se puede observar cómo se ha agregado este servicio a los recursos desplegados:
+En la siguiente imagen se puede observar cómo se ha agregado este servicio (con la IP externa 192.168.1.51) a los recursos desplegados:
 
 ![ingress serivicio expuesto](images/image8.PNG)
 
 ### b.Hacer un segundo Deployment y servicio similar al de la práctica anterior
-deploy-nginx.yaml con nombre diferente
-service2.yaml con nobmre diferente
+Para probar el servicio Ingress, se hará un balanceo entre dos servicios que estarán ligados a la misma dirección IP (la del servicio `nginx: 192.168.1.51`), pero con dos nombres de dominio diferentes: `streamflix1.dyd.eus` y `streamflix2.dyd.eus`, como se mencionó anteriormente.
+
+Antes de configurar el Ingress para realizar este balanceo de carga, es necesario desplegar un segundo Deployment y Servicio. Este segundo conjunto será idéntico al primero, pero con nombres diferentes para no generar conflictos. A continuación, se describen los archivos YAML utilizados para crear estos recursos.
+
+`deploy-nginx.yaml`:
+```yaml
+apiVersion: apps/v1   # Versión de la API para el recurso Deployment
+kind: Deployment      # Tipo de recurso: Deployment
+metadata:             # Metadatos del Deployment
+  name: nginx-deployment         # Nombre del Deployment
+spec:                 # Especificación del Deployment
+  replicas: 3         # Número deseado de réplicas (pods)
+  selector:           # Selector para gestionar los pods de este Deployment
+    matchLabels:      # Define etiquetas que los pods deben tener para ser gestionados por este Deployment
+      app: kuard      # Etiqueta que deben tener los pods para ser gestionados por este Deployment
+  template:           # Template del pod, describe cómo serán los pods del Deployment
+    metadata:         # Metadatos del pod template
+      labels:         # Etiquetas aplicadas a los pods creados por el Deployment
+        app: kuard    # Etiqueta utilizada para identificar los pods
+    spec:             # Especificación del pod
+      containers:     # Lista de contenedores dentro del pod
+        - image: gcr.io/kuar-demo/kuard-amd64:blue # Imagen del contenedor
+          name: streamflix-container # Nombre del contenedor
+          ports:      # Lista de puertos expuestos por el contenedor
+            - containerPort: 8080 # Puerto expuesto por el contenedor dentro del pod
+              protocol: TCP       # Protocolo del puerto, en este caso TCP
+```
+> [!NOTE]
+> El nombre elegido para el Deployment (nginx-deployment) puede no ser el más adecuado. Aunque funcione correctamente en la máquina, el nombre puede resultar confuso para un humano, ya que hace referencia a NGINX pero no está relacionado directamente con el servicio de balanceo. Sería más conveniente elegir un nombre más específico, como streamflix-deployment2, para hacerlo más intuitivo.
+
+`streamflix-service2.yaml`:
+```yaml
+apiVersion: v1       # Versión de la API
+kind: Service        # Tipo de objeto
+metadata:            # Metadatos del objeto
+  name: streamflix-service2        # Nombre del servicio
+spec:                # Especificaciones del servicio
+  ports:             # Puertos del servicio
+  - port: 80       # Puerto expuesto
+    targetPort: 8080 # Puerto al que se redirige
+    protocol: TCP    # Protocolo utilizado
+  selector:          # Selección de pods
+    app: kuard       # Etiqueta para seleccionar los pods
+  type: LoadBalancer    # Tipo de servicio
+```
+
+Este Deployment y Service son funcionalmente idénticos al primero, pero con un nombre diferente. A continuación, se muestra una imagen que visualiza todos los recursos desplegados, incluyendo los dos Deployments y los Services:
+
+![2 x deployment & service](images/image9.PNG)
+
+
 
 ### C. Dar de alta en el /etc/hosts del cliente dos nombres diferentes asociados a la IP del servicio ingress-nginx
+
 hemos definido las siguientes entradas asociadas a la ip 192.168.1.51 en /etc/hosts/: "streamflix1.dyd.eus" "streamflix2.dyd.eus".
 
 **imagen etc/hosts
