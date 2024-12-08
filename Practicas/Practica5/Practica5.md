@@ -301,18 +301,77 @@ Este Deployment y Service son funcionalmente idénticos al primero, pero con un 
 
 ### C. Dar de alta en el /etc/hosts del cliente dos nombres diferentes asociados a la IP del servicio ingress-nginx
 
-hemos definido las siguientes entradas asociadas a la ip 192.168.1.51 en /etc/hosts/: "streamflix1.dyd.eus" "streamflix2.dyd.eus".
+Para que el balanceo de carga utilice diferentes nombres de dominio, es necesario que las peticiones de esos nombres de dominio sean redirigidas a la misma IP. En un entorno de pruebas, donde no se requiere configurar un servidor DNS, se puede modificar directamente el archivo `/etc/hosts` del cliente para asociar los nombres de dominio con la dirección IP del servicio `ingress-nginx`. De esta manera, cualquier solicitud realizada a los nombres de dominio definidos será resuelta localmente sin necesidad de consultar un servidor DNS.
 
-**imagen etc/hosts
+En este caso, se han añadido las siguientes entradas al archivo `/etc/hosts`:
+
+```
+192.168.1.51 streamflix1.dyd.eus
+192.168.1.51 streamflix2.dyd.eus
+```
+
+Estas entradas permiten que las peticiones a `streamflix1.dyd.eus` y `streamflix2.dyd.eus` se resuelvan hacia la dirección IP `192.168.1.51`, que corresponde a la IP externa del LoadBalancer asociado al servicio `ingress-nginx`.
+
+#### Ventajas de esta configuración:
+- **Simplicidad:** Al modificar el archivo `/etc/hosts`, se evita la necesidad de configurar un servidor DNS completo, lo que simplifica la implementación para pruebas locales o de desarrollo.
+- **Prioridad:** En los sistemas Linux, el archivo `/etc/hosts` se consulta antes de realizar una consulta DNS externa. Esto asegura que las peticiones a los nombres de dominio definidos en este archivo se resuelvan localmente, sin necesidad de conexión a Internet.
+- **Pruebas controladas:** Es suficiente para los fines de esta práctica, ya que el entorno es controlado y no se requiere una infraestructura de DNS más compleja.
+
+La siguente imagen muestra el archivo /etc/hosts ya cofigurado: 
+
+![archivo /etc/hosts](images/image10.PNG)
+
 
 ### D. Crear un Ingress que en función del nombre del host dirija la petición a uno u otro servicio
-Hay que poner en el ingress.yaml:
-- cambiamos nombbre
-- primer servicio, name: streamflix-service , host: streamflix1.dyd.eus", port: 80
-- segudno servicio, name: streamflix-service , host: streamflix1.dyd.eus", port: 80
 
-poner los servicios tambien a puerto 80
+Para configurar correctamente el balanceo de carga utilizando el controlador Ingress, se ha creado el archivo ingress.yaml. Este archivo contiene la configuración necesaria para dirigir las peticiones a dos servicios diferentes dependiendo del nombre del host en la solicitud HTTP.
+
+A continuación, se presenta el contenido del archivo YAML `ingress.yaml` : 
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: streamflix-ingress
+spec:
+  rules:
+  - host: "streamflix1.dyd.eus"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: streamflix-service
+            port:
+              number: 80
+  - host: "streamflix2.dyd.eus"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: streamflix-service2
+            port:
+              number: 80
+```
+
+#### Características destacables del `ingress.yaml`
+
+- **kind**: Se define el  tipo de objeto definido como `Ingress`, que en Kubernetes se utiliza para gestionar el acceso a los servicios dentro del clúster mediante HTTP o HTTPS.
+
+- **name**: Se define el nombre del recurso Ingress, `streamflix-ingress`. 
+
+- **rules**:  Define las reglas de enrutamiento:
+
+  - **Primera regla**:La primera regla indica que el tráfico que llegue al host `streamflix1.dyd.eus` será enrutado hacia al servicio llamado `streamflix-service`, que debe estar configurado previamente en Kubernetes para manejar estas solicitudes. El puerto 80 es el puerto de escucha que el servicio `streamflix-service` expone para recibir el tráfico. Este puerto debe coincidir con el puerto configurado en el archivo YAML del servicio correspondiente.
+   - **Primera regla**: La segunda regla indica que el tráfico que llegue al host `streamflix2.dyd.eus` será enrutado hacia al servicio llamado `streamflix-service2`, que debe estar configurado previamente en Kubernetes para manejar estas solicitudes. El puerto 80 es el puerto de escucha que el servicio `streamflix-service2` expone para recibir el tráfico. Este puerto debe coincidir con el puerto configurado en el archivo YAML del servicio correspondiente.
+
 
 ### E. Conectarse desde el navegador web empleando los diferentes nombres y comprobar que responde el servicio asociado a ese nombre y que se balancea entre los pods del servicio
+
+> [!NOTE]
+> En la práctica de clase se llego hasta aquí y conseguimos verificar el servicio de Ingress desde el navegador web. 
 
 ## APARTADO 3
